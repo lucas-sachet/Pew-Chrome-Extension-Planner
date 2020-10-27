@@ -84,9 +84,6 @@ actionInput__suggestions .btn-outline-dark:focus {
   box-shadow: none;
 }
 
-.actionItems {
-}
-
 .actionItem__item {
   background-color: rgb(245,241,255);
   margin: 3px;
