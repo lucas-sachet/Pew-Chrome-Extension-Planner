@@ -1,6 +1,7 @@
 body {
   width: 450px;
   height: 562px;
+  background-color: #2E2A2E;
 }
 
 .greeting img {
@@ -12,14 +13,14 @@ body {
 }
 
 .greeting__type {
-  color: #2f2f2f;
+  color: #D0D0D0;
   font-weight: 400;
   font-size: 1,8rem;
   margin: 0 auto;
 }
 
 .greeting__name {
-  color: #6c757d;
+  color: #fff;
   font-size: 1.5rem;
 }
 
@@ -29,16 +30,17 @@ body {
 }
 
 .actionInput__text {
+  color: #D0D0D0;
   margin-bottom: 0.5rem;
 }
 
 #addItemForm input {
   border: 3px solid rgba(151, 151, 151, 0.271416);
-  background-color:#ededed;
+  background-color: rgb(245,245,255);
   height: 60px;
   border-radius: 15px;
   font-weight: bold;
-  color: #727272;
+  color: #7532a8;
   text-align: center;
 }
 
@@ -49,7 +51,37 @@ body {
 #addItemForm input:focus {
   box-shadow: none;
   outline: none;
-  border-color: grey;
+  background-color: rgb(245,241,255);
+  border-color:rgb(175,151,240);
+}
+
+.actionInput__suggestions {
+  margin-top: 0.5rem;
+  
+  display: flex;
+  justify-content: center;
+}
+
+.actionInput__suggestions button {
+  border-width: 3px;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.actionInput__suggestions .btn-outline-dark {
+  color: rgb(241,240,255);
+  border-color:  rgb(241,240,255);
+}
+
+.actionInput__suggestions .btn-outline-dark:hover {
+  background-color: #2E2A2E;
+  border-color:rgb(175,151,240);
+  color: #fff;
+}
+
+actionInput__suggestions .btn-outline-dark:focus {
+  box-shadow: none;
 }
 
 .actionItems {
