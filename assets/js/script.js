@@ -1,5 +1,19 @@
 let addItemForm = document.querySelector('#addItemForm');
 let itemsList = document.querySelector('.actionItems');
+let storage = chrome.storage.sync;
+
+
+
+storage.get(['actionItems'], ( data ) => {
+  let actionItems = data.actionItems;
+  renderActionItems(actionItems);
+});
+
+const renderActionItems = (actionItems) => {
+  actionItems.forEach(item => {
+    renderActionItem(item.text);
+  });
+}
 
 addItemForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -19,17 +33,17 @@ const add = (text) => {
     completed: null,
   }
   
-  chrome.storage.sync.get(['actionItems'], ( data ) => {
+  storage.get(['actionItems'], ( data ) => {
     let items = data.actionItems;
     if(!items){
       items = [actionItem]
     } else {
       items.push(actionItem);
     }
-    chrome.storage.sync.set({
+    storage.set({
       actionItems: items
     }, () => {
-      chrome.storage.sync.get(['actionItems'], ( data ) => {
+      storage.get(['actionItems'], ( data ) => {
         console.log(data);
       })
     }); 
