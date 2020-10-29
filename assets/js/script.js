@@ -2,12 +2,12 @@ let addItemForm = document.querySelector('#addItemForm');
 let itemsList = document.querySelector('.actionItems');
 let storage = chrome.storage.sync;
 
-
+let actionItemItils = new ActionItems();
 
 storage.get(['actionItems'], ( data ) => {
   let actionItems = data.actionItems;
   renderActionItems(actionItems);
-  setProgress();
+  actionItemItils.setProgress();
 });
 
 const renderActionItems = (actionItems) => {
@@ -20,64 +20,21 @@ addItemForm.addEventListener('submit', (e) => {
   e.preventDefault();
   let itemText = addItemForm.elements.namedItem('itemText').value;
   if(itemText) {
-    add(itemText);
+    actionItemItils.add(itemText);
     renderActionItem(itemText);
     addItemForm.elements.namedItem('itemText').value = '';
   } 
 })
-
-const add = (text) => {
-  let actionItem = {
-    id: uuidv4(),
-    added: new Date().toString(),
-    text: text,
-    completed: null,
-  }
-  
-  storage.get(['actionItems'], ( data ) => {
-    let items = data.actionItems;
-    if(!items){
-      items = [actionItem]
-    } else {
-      items.push(actionItem);
-    }
-
-    storage.set({
-      actionItems: items
-    }, () => {
-      storage.get(['actionItems'], ( data ) => {
-        console.log(data);
-      })
-    }); 
-  });
-  
-}
-
-const markUnmarkCompleted = ( id, completeStatus ) => {
-  storage.get(['actionItems'], ( data ) => {
-    let items = data.actionItems;
-    let completed = items.completed;
-    let foundItemIndex = items.findIndex(( item ) => item.id == id);
-    if(foundItemIndex >= 0) {
-      items[foundItemIndex].completed = completeStatus;
-      storage.set({
-        actionItems: items
-      }, () => {
-        setProgress();
-      });
-    }
-  })
-}
 
 const handleCompletedEventListener = (e) => {
   const id = e.target.parentElement.parentElement.getAttribute('data-id');
   const parent = e.target.parentElement.parentElement;
   
   if (parent.classList.contains('completed')) {
-    markUnmarkCompleted(id, null);
+    actionItemItils.markUnmarkCompleted(id, null);
     parent.classList.remove('completed');
   } else {
-    markUnmarkCompleted(id, new Date().toString());
+    actionItemItils.markUnmarkCompleted(id, new Date().toString());
     parent.classList.add('completed');
   }
 }
@@ -116,52 +73,3 @@ const renderActionItem = (text, id, completed) => {
   divElement.appendChild(mainElement);
   itemsList.prepend(divElement);
 }
-
-
-const setProgress = () => {
-  storage.get(['actionItems'], ( data ) => {
-    let actionItems = data.actionItems;
-    let completedItems;
-    let totalItems = actionItems.length;
-    completedItems = actionItems.filter( item => item.completed).length;
-    let progress = 0;
-    progress = completedItems / totalItems;
-    circle.animate(progress);
-  })
-}
-
-var circle = new ProgressBar.Circle('#container', {
-  color: '#7532a8',
-  // This has to be the same size as the maximum width to
-  // prevent clipping
-  strokeWidth: 6,
-  trailWidth: 2,
-  easing: 'easeInOut',
-  duration: 1400,
-  text: {
-    autoStyleContainer: false
-  },
-  from: {
-    color: '#b24dff',
-    width: 1
-  },
-  to: {
-    color: '#7532a8',
-    width: 4
-  },
-  // Set default step function for all animate calls
-  step: function (state, circle) {
-    circle.path.setAttribute('stroke', state.color);
-    circle.path.setAttribute('stroke-width', state.width);
-
-    var value = Math.round(circle.value() * 100);
-    if (value === 0) {
-      circle.setText('');
-    } else {
-      circle.setText(value);
-    }
-
-  }
-});
-circle.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-circle.text.style.fontSize = '2rem';
