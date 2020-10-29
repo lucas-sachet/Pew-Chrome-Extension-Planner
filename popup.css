@@ -122,6 +122,10 @@ actionInput__suggestions .btn-outline-dark:focus {
   cursor: pointer;
 }
 
+.actionItem__check * {
+  pointer-events: none;
+}
+
 .actionItem__checkBox {
   border: 3px solid rgba(175,151,240, 0.3);
   width: 30px;
@@ -173,3 +177,4 @@ actionInput__suggestions .btn-outline-dark:focus {
 .actionItem__item.completed .actionItem__delete {
   color: #fff;
 }
+

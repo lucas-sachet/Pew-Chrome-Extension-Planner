@@ -7,11 +7,12 @@ let storage = chrome.storage.sync;
 storage.get(['actionItems'], ( data ) => {
   let actionItems = data.actionItems;
   renderActionItems(actionItems);
+  console.log(actionItems);
 });
 
 const renderActionItems = (actionItems) => {
-  actionItems.forEach(item => {
-    renderActionItem(item.text);
+  actionItems.forEach( ( item ) => {
+    renderActionItem(item.text, item.id, item.completed);
   });
 }
 
@@ -27,7 +28,7 @@ addItemForm.addEventListener('submit', (e) => {
 
 const add = (text) => {
   let actionItem = {
-    id: 1,
+    id: uuidv4(),
     added: new Date().toString(),
     text: text,
     completed: null,
@@ -40,6 +41,7 @@ const add = (text) => {
     } else {
       items.push(actionItem);
     }
+    
     storage.set({
       actionItems: items
     }, () => {
@@ -51,7 +53,27 @@ const add = (text) => {
   
 }
 
-const renderActionItem = (text) => {
+const markUnmarkCompleted = ( id ) => {
+  storage.get(['actionItems'], ( data ) => {
+    let items = data.actionItems;
+    let foundItemIndex = items.findIndex(( item ) => item.id == id);
+    if(foundItemIndex >= 0) {
+      items[foundItemIndex].completed = true;
+      storage.set({
+        actionItems: items
+      });
+    }
+  })
+}
+
+const handleCompletedEventListener = (e) => {
+  const id = e.target.parentElement.parentElement.getAttribute('data-id');
+  const parent = e.target.parentElement.parentElement;
+  parent.classList.add('completed');
+  markUnmarkCompleted(id);
+}
+
+const renderActionItem = (text, id, completed) => {
   let divElement = document.createElement('div');
   let mainElement = document.createElement('div');
   let checkElement = document.createElement('div');
@@ -69,9 +91,12 @@ const renderActionItem = (text) => {
           <i class="fas fa-check" aria-hidden="true"></i>
         </div> 
       `;
-
+  if(completed) {
+    divElement.classList.add('completed');
+  }
+  divElement.setAttribute('data-id', id);
+  checkElement.addEventListener('click', handleCompletedEventListener);
   textElement.textContent = text;
-
   deleteElement.innerHTML =
     `
       <i class="fas fa-times" aria-hidden="true"></i>
