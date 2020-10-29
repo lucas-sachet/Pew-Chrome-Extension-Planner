@@ -6,6 +6,7 @@ let actionItemItils = new ActionItems();
 
 storage.get(['actionItems'], ( data ) => {
   let actionItems = data.actionItems;
+  console.log(actionItems);
   renderActionItems(actionItems);
   actionItemItils.setProgress();
 });
@@ -39,6 +40,13 @@ const handleCompletedEventListener = (e) => {
   }
 }
 
+const handleDeleteEventListener = (e) => {
+  const id = e.target.parentElement.parentElement.getAttribute('data-id');
+  const parent = e.target.parentElement.parentElement;
+  parent.remove();
+  actionItemItils.remove(id);
+}
+
 const renderActionItem = (text, id, completed) => {
   let divElement = document.createElement('div');
   let mainElement = document.createElement('div');
@@ -67,6 +75,7 @@ const renderActionItem = (text, id, completed) => {
     `
       <i class="fas fa-times" aria-hidden="true"></i>
     `;
+  deleteElement.addEventListener('click', handleDeleteEventListener);
   mainElement.appendChild(checkElement);
   mainElement.appendChild(textElement);
   mainElement.appendChild(deleteElement);
