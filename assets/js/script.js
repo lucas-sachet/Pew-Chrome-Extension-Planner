@@ -17,7 +17,7 @@ storage.get(['actionItems'], ( data ) => {
 
 const renderActionItems = ( actionItems ) => {
   actionItems.forEach( ( item ) => {
-    renderActionItem(item.text, item.id, item.completed);
+    renderActionItem(item.text, item.id, item.completed, item.website);
   });
 }
 
@@ -26,7 +26,7 @@ const handleQuickActionListener = ( e ) => {
   const id = e.target.getAttribute('data-id');
   getCurrentTab().then(( tab ) => {
     actionItemUtils.addQuickActionItem(id, text, tab, ( item ) => {
-      renderActionItem(item.text, item.id, item.completed);
+      renderActionItem(item.text, item.id, item.completed, item.website);
     });
   })
 }
@@ -51,7 +51,7 @@ addItemForm.addEventListener('submit', (e) => {
   let itemText = addItemForm.elements.namedItem('itemText').value;
   if(itemText) {
     actionItemUtils.add(itemText, null, ( actionItem )=>{
-      renderActionItem(item.text, item.id, item.completed);
+      renderActionItem(item.text, item.id, item.completed, item.website);
       addItemForm.elements.namedItem('itemText').value = '';
     });
   } 
@@ -78,7 +78,7 @@ const handleDeleteEventListener = (e) => {
   });
 }
 
-const renderActionItem = (text, id, completed) => {
+const renderActionItem = (text, id, completed, website = null) => {
   let divElement = document.createElement('div');
   let mainElement = document.createElement('div');
   let checkElement = document.createElement('div');
@@ -107,9 +107,33 @@ const renderActionItem = (text, id, completed) => {
       <i class="fas fa-times" aria-hidden="true"></i>
     `;
   deleteElement.addEventListener('click', handleDeleteEventListener);
+ 
   mainElement.appendChild(checkElement);
   mainElement.appendChild(textElement);
   mainElement.appendChild(deleteElement);
   divElement.appendChild(mainElement);
+  if(website) {
+    let linkContainer = createLinkContainer(website.url, website.fav_icon, website.title);
+    divElement.appendChild(linkContainer);
+    console.log(website);
+  }
   itemsList.prepend(divElement);
+}
+
+const createLinkContainer = (url, favIcon, title) => {
+  let element = document.createElement('div');
+  element.classList.add('actionItem__linkContainer');
+  element.innerHTML= `
+  <a href="${url}" target="_blank">
+    <div class="actionItem__link">
+      <div class="actionItem__favIcon">
+        <img src="${favIcon}" alt="favicon">
+      </div>
+      <div class="actionItem__title">
+        <span>${title}</span>
+      </div>
+    </div>
+  </a>
+  `
+  return element;
 }
