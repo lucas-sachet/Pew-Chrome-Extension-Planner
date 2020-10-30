@@ -2,28 +2,45 @@ let addItemForm = document.querySelector('#addItemForm');
 let itemsList = document.querySelector('.actionItems');
 let storage = chrome.storage.sync;
 
-let actionItemItils = new ActionItems();
+let actionItemUtils = new ActionItems();
 
 storage.get(['actionItems'], ( data ) => {
   let actionItems = data.actionItems;
-  console.log(actionItems);
+  createQuickActionListener();
   renderActionItems(actionItems);
-  actionItemItils.setProgress();
+  chrome.storage.onChanged.addListener( () => {
+    actionItemUtils.setProgress();
+  })
 });
 
-const renderActionItems = (actionItems) => {
+const renderActionItems = ( actionItems ) => {
   actionItems.forEach( ( item ) => {
     renderActionItem(item.text, item.id, item.completed);
   });
+}
+
+const handleQuickActionListener = ( e ) => {
+  const text = e.target.getAttribute('data-text');
+  actionItemUtils.add(text, ( item ) => {
+    renderActionItem(item.text, item.id, item.completed);
+  });
+}
+
+const createQuickActionListener = () => {
+  let buttons = document.querySelectorAll('.quick-action');
+  buttons.forEach(( button ) => {
+    button.addEventListener('click', handleQuickActionListener)
+  })
 }
 
 addItemForm.addEventListener('submit', (e) => {
   e.preventDefault();
   let itemText = addItemForm.elements.namedItem('itemText').value;
   if(itemText) {
-    actionItemItils.add(itemText);
-    renderActionItem(itemText);
-    addItemForm.elements.namedItem('itemText').value = '';
+    actionItemUtils.add(itemText, ( actionItem )=>{
+      renderActionItem(item.text, item.id, item.completed);
+      addItemForm.elements.namedItem('itemText').value = '';
+    });
   } 
 })
 
@@ -32,10 +49,10 @@ const handleCompletedEventListener = (e) => {
   const parent = e.target.parentElement.parentElement;
   
   if (parent.classList.contains('completed')) {
-    actionItemItils.markUnmarkCompleted(id, null);
+    actionItemUtils.markUnmarkCompleted(id, null);
     parent.classList.remove('completed');
   } else {
-    actionItemItils.markUnmarkCompleted(id, new Date().toString());
+    actionItemUtils.markUnmarkCompleted(id, new Date().toString());
     parent.classList.add('completed');
   }
 }
@@ -43,8 +60,9 @@ const handleCompletedEventListener = (e) => {
 const handleDeleteEventListener = (e) => {
   const id = e.target.parentElement.parentElement.getAttribute('data-id');
   const parent = e.target.parentElement.parentElement;
-  parent.remove();
-  actionItemItils.remove(id);
+  actionItemUtils.remove(id, () => {
+    parent.remove();
+  });
 }
 
 const renderActionItem = (text, id, completed) => {

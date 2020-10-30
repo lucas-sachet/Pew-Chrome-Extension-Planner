@@ -188,16 +188,16 @@ actionInput__suggestions .btn-outline-dark:focus {
 }
 
 .actionItem__item.completed .actionItem__checkBox:hover {
-  border-color: rgba(175,151,240, 0.3);
-  background-color: #fff;
+  border-color: rgba(175,151,240, 0.3)!important;
+  background-color: #fff!important;
 }
 
 .actionItem__item.completed .actionItem__checkBox i {
   color: #7532a8;
 }
 
-.actionItem__item.completed .actionItem__checkBox i:hover {
-  color: rgba(175,151,240, 0.3);
+.actionItem__item.completed .actionItem__checkBox > i:hover {
+  color: rgba(175,151,240, 0.3)!important;
 }
 
 .actionItem__item.completed .actionItem__delete {

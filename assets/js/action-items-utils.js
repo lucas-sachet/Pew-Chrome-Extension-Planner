@@ -1,7 +1,7 @@
 
 
 class ActionItems {
-  add = ( text ) => {
+  add = ( text, callback ) => {
     let actionItem = {
       id: uuidv4(),
       added: new Date().toString(),
@@ -19,12 +19,13 @@ class ActionItems {
   
       storage.set({
         actionItems: items
+      }, () => {
+        callback(actionItem);
       }); 
     });
-    
   }
 
-  remove = ( id ) => {
+  remove = ( id, callback ) => {
     storage.get(['actionItems'], ( data ) => {
       let items = data.actionItems;
       let foundItemIndex = items.findIndex(( item ) => item.id == id);
@@ -32,9 +33,7 @@ class ActionItems {
         items.splice(foundItemIndex, 1);
         storage.set({
           actionItems: items
-        }, () => {
-          this.setProgress();
-        });
+        }, callback);
       }
     })
   }
@@ -48,8 +47,6 @@ class ActionItems {
         items[foundItemIndex].completed = completeStatus;
         storage.set({
           actionItems: items
-        }, () => {
-          this.setProgress();
         });
       }
     })
