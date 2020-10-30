@@ -208,3 +208,63 @@ actionInput__suggestions .btn-outline-dark:focus {
   color: #D00000;
 }
 
+.actionItem__linkContainer {
+  margin-top: 4px;
+}
+.actionItem__linkContainer a {
+  color: #7532a8;
+}
+
+.actionItem__linkContainer a:hover {
+  color: #ac7ad1;
+  text-decoration: none;
+}
+
+.actionItem__linkContainer a:hover .actionItem__link,.actionItem__linkContainer a:hover .actionItem__favIcon {
+  border-color: #8c4ebc;
+}
+
+.actionItem__link {
+  display: flex;
+  border: 2px solid rgba(151, 151, 151, 0.271416);
+  border-radius: 8px;
+  height: 45px;
+  background-color: rgb(245,241,255);
+
+  transition: border-color 0.2s ease-out;
+}
+
+.actionItem__title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+
+  overflow: hidden;
+}
+
+.actionItem__title span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.actionItem__favIcon {
+  flex-basis: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  flex-grow: 0;
+
+  border-right: 2px solid rgba(151, 151, 151, 0.271416);
+
+  transition: border-color 0.2s ease-out;
+}
+
+.actionItem__favIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 5px;
+}
