@@ -1,12 +1,28 @@
 
 
 class ActionItems {
-  add = ( text, callback ) => {
+  
+  addQuickActionItem = ( id, text, tab, callback ) => {
+   let website = null;
+    //quick action 4 = Link site for later
+    if(id == "quick-action-4") {
+      website = {
+        url: tab.url,
+        fav_icon: tab.favIconUrl,
+        title: tab.title
+      }
+    }
+  
+    this.add(text, website, callback)
+  }
+  
+  add = ( text, website = null, callback ) => {
     let actionItem = {
       id: uuidv4(),
       added: new Date().toString(),
       text: text,
       completed: null,
+      website: website,
     }
     
     storage.get(['actionItems'], ( data ) => {

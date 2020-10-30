@@ -6,8 +6,10 @@ let actionItemUtils = new ActionItems();
 
 storage.get(['actionItems'], ( data ) => {
   let actionItems = data.actionItems;
+  console.log(actionItems);
   createQuickActionListener();
   renderActionItems(actionItems);
+  getCurrentTab();
   chrome.storage.onChanged.addListener( () => {
     actionItemUtils.setProgress();
   })
@@ -21,9 +23,12 @@ const renderActionItems = ( actionItems ) => {
 
 const handleQuickActionListener = ( e ) => {
   const text = e.target.getAttribute('data-text');
-  actionItemUtils.add(text, ( item ) => {
-    renderActionItem(item.text, item.id, item.completed);
-  });
+  const id = e.target.getAttribute('data-id');
+  getCurrentTab().then(( tab ) => {
+    actionItemUtils.addQuickActionItem(id, text, tab, ( item ) => {
+      renderActionItem(item.text, item.id, item.completed);
+    });
+  })
 }
 
 const createQuickActionListener = () => {
@@ -33,11 +38,19 @@ const createQuickActionListener = () => {
   })
 }
 
+async function getCurrentTab() {
+  return await new Promise(( resolve, reject ) => {
+    chrome.tabs.query({ 'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT }, ( tabs ) => {
+      resolve(tabs[0]);
+    })
+  })
+}
+
 addItemForm.addEventListener('submit', (e) => {
   e.preventDefault();
   let itemText = addItemForm.elements.namedItem('itemText').value;
   if(itemText) {
-    actionItemUtils.add(itemText, ( actionItem )=>{
+    actionItemUtils.add(itemText, null, ( actionItem )=>{
       renderActionItem(item.text, item.id, item.completed);
       addItemForm.elements.namedItem('itemText').value = '';
     });
