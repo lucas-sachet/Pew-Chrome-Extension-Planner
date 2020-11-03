@@ -30,6 +30,21 @@ body::-webkit-scrollbar {
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+}
+
+.greeting__name i {
+  font-size: 0.9rem;
+  margin-left: 8px;
+  color: #fff;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.greeting__name:hover i {
+  opacity: 1;
 }
 
 .progressContainer {
@@ -121,6 +136,7 @@ actionInput__suggestions .btn-outline-dark:focus {
   justify-content: center;
 
   cursor: pointer;
+  
 }
 
 .actionItem__check * {
@@ -136,17 +152,19 @@ actionInput__suggestions .btn-outline-dark:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s;
 }
 
-.actionItem__checkBox:hover {
+.actionItem__check:hover .actionItem__checkBox {
   border-color: #7532a8;
+  transition: all 0.2s;
 }
 
 .actionItem__checkBox i {
   color: rgba(175,151,240, 0.3);
 }
 
-.actionItem__checkBox i:hover {
+.actionItem__check:hover .actionItem__checkBox i {
   color: #7532a8
 }
 
@@ -177,6 +195,7 @@ actionInput__suggestions .btn-outline-dark:focus {
 
 .actionItem__item.completed {
   background-color: #8c4ebc;
+  transition: all 0.2s;
 }
 
 .actionItem__item.completed .actionItem__text {
@@ -188,17 +207,17 @@ actionInput__suggestions .btn-outline-dark:focus {
   background-color: rgb(245,241,255);
 }
 
-.actionItem__item.completed .actionItem__checkBox:hover {
-  border-color: rgba(175,151,240, 0.3)!important;
-  background-color: #fff!important;
+.actionItem__item.completed .actionItem__check:hover .actionItem__checkBox {
+  border-color: rgba(175,151,240, 0.3);
+  background-color: #fff;
 }
 
 .actionItem__item.completed .actionItem__checkBox i {
   color: #7532a8;
 }
 
-.actionItem__item.completed .actionItem__checkBox > i:hover {
-  color: rgba(175,151,240, 0.3)!important;
+.actionItem__item.completed .actionItem__check:hover .actionItem__checkBox i {
+  color: rgba(175,151,240, 0.3);
 }
 
 .actionItem__item.completed .actionItem__delete {
