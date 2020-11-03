@@ -9,6 +9,8 @@ storage.get(['actionItems'], ( data ) => {
   console.log(actionItems);
   createQuickActionListener();
   renderActionItems(actionItems);
+  actionItemUtils.setProgress();
+  createUpdateNameDialogListener();
   getCurrentTab();
   chrome.storage.onChanged.addListener( () => {
     actionItemUtils.setProgress();
@@ -19,6 +21,15 @@ const renderActionItems = ( actionItems ) => {
   actionItems.forEach( ( item ) => {
     renderActionItem(item.text, item.id, item.completed, item.website);
   });
+}
+
+const createUpdateNameDialogListener = () => {
+  let greetingName = document.querySelector('.greeting__name');
+
+  greetingName.addEventListener('click', () => {
+    //open the modal
+    $('#updateNameModal').modal('show');
+  })
 }
 
 const handleQuickActionListener = ( e ) => {
