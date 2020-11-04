@@ -9,7 +9,6 @@ storage.get(['actionItems', 'name'], ( data ) => {
   let name = data.name;
   setUsersName(name);
   setGreeting();
-  console.log(actionItems);
   createQuickActionListener();
   renderActionItems(actionItems);
   actionItemUtils.setProgress();
