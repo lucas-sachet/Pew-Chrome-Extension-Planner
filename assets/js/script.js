@@ -2,6 +2,7 @@ let addItemForm = document.querySelector('#addItemForm');
 let itemsList = document.querySelector('.actionItems');
 let storage = chrome.storage.sync;
 
+
 let actionItemUtils = new ActionItems();
 
 storage.get(['actionItems', 'name'], ( data ) => {

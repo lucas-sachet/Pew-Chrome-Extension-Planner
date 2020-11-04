@@ -157,11 +157,12 @@ actionInput__suggestions .btn-outline-dark:focus {
 
 .actionItem__check:hover .actionItem__checkBox {
   border-color: #7532a8;
-  transition: all 0.2s;
+ 
 }
 
 .actionItem__checkBox i {
   color: rgba(175,151,240, 0.3);
+  transition: all 0.2s ease-in-out;
 }
 
 .actionItem__check:hover .actionItem__checkBox i {
@@ -241,7 +242,7 @@ actionInput__suggestions .btn-outline-dark:focus {
 }
 
 .actionItem__linkContainer a:hover .actionItem__link,.actionItem__linkContainer a:hover .actionItem__favIcon {
-  border-color: #8c4ebc;
+  border-color: #6c3894;
 }
 
 .actionItem__link {
@@ -252,6 +253,10 @@ actionInput__suggestions .btn-outline-dark:focus {
   background-color: rgb(245,241,255);
 
   transition: border-color 0.2s ease-out;
+}
+
+.actionItem__item.completed .actionItem__link {
+  background-color: #d4bbe8;
 }
 
 .actionItem__title {
@@ -287,4 +292,48 @@ actionInput__suggestions .btn-outline-dark:focus {
   height: 100%;
   object-fit: contain;
   padding: 5px;
+}
+
+.modal-dialog {
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+.modal-content {
+  background-color: #2E2A2E;
+}
+
+.modal-header {
+  color: #fff;
+}
+
+.modal .form-control:focus {
+  color: #2E2A2E;
+  background-color: #fff;
+  border-color: #6c3894;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(108, 56, 148,.25);
+}
+
+.modal .btn-primary {
+  color: #fff;
+  background-color: #7532a8;
+  border-color:#7532a0;
+}
+
+.modal .btn-primary:focus, .modal .btn-primary:active {
+  color: #fff;
+  background-color: #7532a8 !important;
+  border-color: #7532a8 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.modal .close {
+  color:  #7532a8;
+  text-shadow: none !important;
+}
+
+.modal .btn-primary:hover {
+ background-color: #6c3894;
 }
