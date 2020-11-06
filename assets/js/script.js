@@ -29,7 +29,7 @@ const setUsersName = ( name ) => {
 const renderActionItems = ( actionItems ) => {
   const filteredItems = filterActionItems(actionItems);
   filteredItems.forEach( ( item ) => {
-    renderActionItem(item.text, item.id, item.completed, item.website);
+    renderActionItem(item.text, item.id, item.completed, item.website, 250);
   });
   storage.set({
     actionItems : filteredItems
@@ -85,7 +85,7 @@ const handleQuickActionListener = ( e ) => {
   const id = e.target.getAttribute('data-id');
   getCurrentTab().then(( tab ) => {
     actionItemUtils.addQuickActionItem(id, text, tab, ( item ) => {
-      renderActionItem(item.text, item.id, item.completed, item.website);
+      renderActionItem(item.text, item.id, item.completed, item.website, 250);
     });
   })
 }
@@ -110,7 +110,7 @@ addItemForm.addEventListener('submit', (e) => {
   let itemText = addItemForm.elements.namedItem('itemText').value;
   if(itemText) {
     actionItemUtils.add(itemText, null, ( actionItem )=>{
-      renderActionItem(item.text, item.id, item.completed, item.website);
+      renderActionItem(item.text, item.id, item.completed, item.website, 250);
       addItemForm.elements.namedItem('itemText').value = '';
     });
   } 
@@ -132,12 +132,13 @@ const handleCompletedEventListener = (e) => {
 const handleDeleteEventListener = (e) => {
   const id = e.target.parentElement.parentElement.getAttribute('data-id');
   const parent = e.target.parentElement.parentElement;
+  let jElement = $(`div[data-id="${id}"]`);
   actionItemUtils.remove(id, () => {
-    parent.remove();
+    animateRight(jElement);
   });
 }
 
-const renderActionItem = (text, id, completed, website = null) => {
+const renderActionItem = (text, id, completed, website = null, animationDuration=500 ) => {
   let divElement = document.createElement('div');
   let mainElement = document.createElement('div');
   let checkElement = document.createElement('div');
@@ -177,6 +178,27 @@ const renderActionItem = (text, id, completed, website = null) => {
     console.log(website);
   }
   itemsList.prepend(divElement);
+  let jElement = $(`div[data-id="${id}"]`);
+  animateDown(jElement, animationDuration);
+}
+
+const animateRight = ( element ) => {
+  let width = element.innerWidth();
+  element.animate({
+    opacity: 0,
+    marginLeft: `${width}px`,
+    marginRight: `-${width}px`,
+  }, 350, () => {
+    element.remove();
+  })
+}
+
+const animateDown = ( element, duration ) => {
+  let height = element.innerHeight();
+  element.css({marginTop: `-${height}px`, opacity: 0 }).animate({
+    opacity: 1,
+    marginTop: '12px',
+  }, duration)
 }
 
 const createLinkContainer = (url, favIcon, title) => {

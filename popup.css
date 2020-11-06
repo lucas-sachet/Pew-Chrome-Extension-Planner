@@ -1,9 +1,11 @@
 body {
   width: 450px;
-  min-height: 562px;
   padding: 12px 12px 27px 12px; 
   background-color: #2E2A2E;
   border: none;
+}
+.main {
+  min-height: 562px;
 }
 
 body::-webkit-scrollbar {
@@ -50,6 +52,11 @@ body::-webkit-scrollbar {
 .progressContainer {
   display: flex;
   justify-content: center;
+}
+
+.actionInput {
+  background-color: #2E2A2E;
+  z-index: 1000;
 }
 
 .actionInput__text {
@@ -113,11 +120,43 @@ actionInput__suggestions .btn-outline-dark:focus {
   padding: 1rem;
   margin-top: 1rem;
   border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  transition: all 0.25s ease;
+}
+
+.actionItem__item::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 100%;
+  background: #8c4ebc;
+
+  transition: right 0.3s ease;
+  transition-property: box-shadow, transform;
+}
+
+.actionItem__item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 5px -2px#0b0a0b;
+}
+
+.actionItem__item.completed::before {
+  right: 0;
 }
 
 .actionItem__main {
   display: flex;
   align-items: center;
+
+  z-index: 100;
 }
 
 .actionItem__text {
@@ -195,8 +234,7 @@ actionInput__suggestions .btn-outline-dark:focus {
 }
 
 .actionItem__item.completed {
-  background-color: #8c4ebc;
-  transition: all 0.2s;
+  background-color: #2E2A2E;
 }
 
 .actionItem__item.completed .actionItem__text {
@@ -231,6 +269,8 @@ actionInput__suggestions .btn-outline-dark:focus {
 
 .actionItem__linkContainer {
   margin-top: 4px;
+
+  z-index: 100;
 }
 .actionItem__linkContainer a {
   color: #7532a8;
